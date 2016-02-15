@@ -1,0 +1,22 @@
+{
+  "name": "name-form",
+  "version": "1.0.0",
+  "description": "just enter one and see what happens",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cundiff/name-form.git"
+  },
+  "author": "cundiff",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cundiff/name-form/issues"
+  },
+  "homepage": "https://github.com/cundiff/name-form#readme",
+  "dependencies": {
+    "express": "^4.13.4"
+  }
+}
