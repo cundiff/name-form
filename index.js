@@ -1,6 +1,20 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var pg = require('pg');
 var app = express();
+
+var db_url = process.env.DATABASE_URL || 'postgres://localhost:5432/adfgvx';
+
+pg.connect(db_url, function(err, client) {
+  if (err) throw err;
+  console.log('Connected to postgres! Getting schemas...');
+
+  client
+    .query('SELECT table_schema,table_name FROM information_schema.tables;')
+    .on('row', function(row) {
+      console.log(JSON.stringify(row));
+    });
+});
 
 app.use(bodyParser());
 
