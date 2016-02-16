@@ -1,12 +1,19 @@
 var express = require('express');
+var bodyParser = require('body-parser');
 var app = express();
 
-app.set('port', (process.env.PORT || 5000));
+app.use(bodyParser());
+
+app.set('port', (process.env.PORT || 3000));
+app.set('view engine', 'jade');
 
 app.get('/', function (req, res) {
-  res.send('Hello World!');
+  res.render('index');
 });
 
-app.listen(app.get('port'), function () {
-  console.log('Example app listening on port 3000!');
+app.post('/', function(req, res){
+  var userName = req.body.userName;
+  res.render('fame', {name: userName});
 });
+
+app.listen(app.get('port'));
