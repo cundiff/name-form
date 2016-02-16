@@ -5,17 +5,6 @@ var app = express();
 
 var db_url = process.env.DATABASE_URL || 'postgres://localhost:5432/adfgvx';
 
-pg.connect(db_url, function(err, client) {
-  if (err) throw err;
-  console.log('Connected to postgres! Getting schemas...');
-
-  client
-    .query('SELECT table_schema,table_name FROM information_schema.tables;')
-    .on('row', function(row) {
-      console.log(JSON.stringify(row));
-    });
-});
-
 app.use(bodyParser());
 
 app.set('port', (process.env.PORT || 3000));
@@ -27,7 +16,28 @@ app.get('/', function (req, res) {
 
 app.post('/', function(req, res){
   var userName = req.body.userName;
-  res.render('fame', {name: userName});
+  var winners = [];
+
+  pg.connect(db_url, function(err, client, done) {
+    if(err) {
+      done();
+      console.log(err);
+      return res.status(500).json({ success: false, data: err});
+    }
+
+    client.query("INSERT INTO winners(name) values($1)", [userName]);
+
+    var query = client.query("SELECT * FROM winners ORDER BY id ASC");
+
+    query.on('row', function(row) {
+      winners.push(row);
+    });
+
+    query.on('end', function() {
+      done();
+      res.render('fame', {winners: winners});
+    });
+  });
 });
 
 app.listen(app.get('port'));

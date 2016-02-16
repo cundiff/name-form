@@ -4,4 +4,6 @@ html
       Winner, winner...
   body
     h1 Wall of Fame
-    = name
+    ol
+      each winner in winners
+        li= winner.name
